@@ -1159,11 +1159,6 @@ export const pl = {
       start: "Wyrównaj do lewej",
     },
     editorBodyFontSizeTitle: "Rozmiar tekstu",
-    editorParagraphSpacingTitle: "Odstęp między akapitami",
-    editorTextAlignTitle: "Wyrównanie tekstu",
-    editorLetterSpacingTitle: "Odstęp między znakami",
-    editorTextAlignOptions: { left: "Do lewej", justify: "Wyjustowany" },
-    editorLetterSpacingDefault: "Domyślny",
     editorBodyLineHeightTitle: "Interlinia",
     accountSyncDescription: "Synchronizowane z chmurą.",
     editorBodyLineHeights: {

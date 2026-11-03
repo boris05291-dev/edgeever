@@ -22,12 +22,6 @@ import {
   NOTE_PROSE_EMPHASIS_STYLES,
   NOTE_PROSE_FONT_SIZES,
   NOTE_PROSE_HEADING_STYLES,
-  NOTE_PROSE_PARAGRAPH_SPACINGS,
-  NOTE_PROSE_TEXT_ALIGNS,
-  NOTE_PROSE_LETTER_SPACINGS,
-  parseNoteProseParagraphSpacing,
-  parseNoteProseTextAlign,
-  parseNoteProseLetterSpacing,
   NOTE_PROSE_PALETTE_CHOICES,
   NOTE_PROSE_PALETTES,
   NOTE_PROSE_QUOTE_STYLES,
@@ -452,70 +446,6 @@ export const PreferenceCard = ({
         <PreferenceSection title={t("settings.groups.reading")}>
           <div className="flex min-h-16 flex-col items-start gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
             <div className="flex min-w-0 items-center gap-3">
-              <Palette className="h-4 w-4 shrink-0 text-slate-500" />
-              <div className="min-w-0">
-                <div className={SETTINGS_ITEM_TITLE_CLASSNAME}>{t("settings.editorBodyPaletteTitle")}</div>
-              </div>
-            </div>
-            <div className="flex w-full shrink-0 flex-col gap-2 sm:w-80">
-              <Select
-                value={noteProse.palette}
-                onValueChange={(value) => onNoteProseChange({ palette: value as NoteProsePaletteChoice })}
-              >
-                <SelectTrigger aria-label={t("settings.editorBodyPaletteTitle")} className="h-9 bg-card">
-                  <SelectValue>
-                    <span className="flex items-center gap-2">
-                      <NoteProsePaletteSwatch paletteId={noteProse.palette} />
-                      <span>{t(`settings.editorBodyPalettes.${noteProse.palette}`)}</span>
-                    </span>
-                  </SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                  {NOTE_PROSE_PALETTE_CHOICES.map((paletteId) => (
-                    <SelectItem
-                      key={paletteId}
-                      value={paletteId}
-                      className="pr-2.5 [&>span:last-child]:flex [&>span:last-child]:min-w-0 [&>span:last-child]:flex-1"
-                    >
-                      <span className="flex w-full items-center justify-between gap-3">
-                        <span>{t(`settings.editorBodyPalettes.${paletteId}`)}</span>
-                        <NoteProsePaletteSwatch paletteId={paletteId} />
-                      </span>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          <div className="flex min-h-16 flex-col items-start gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
-            <div className="flex min-w-0 items-center gap-3">
-              <Heading className="h-4 w-4 shrink-0 text-slate-500" />
-              <div className="min-w-0">
-                <div className={SETTINGS_ITEM_TITLE_CLASSNAME}>{t("settings.editorBodyHeadingStyleTitle")}</div>
-              </div>
-            </div>
-            <div className="w-full shrink-0 sm:w-80">
-              <Select
-                value={noteProseStyle.headingStyle}
-                onValueChange={(value) => writeNoteProseStylePreference({ headingStyle: value as NoteProseHeadingStyle })}
-              >
-                <SelectTrigger aria-label={t("settings.editorBodyHeadingStyleTitle")} className="h-9 bg-card">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {NOTE_PROSE_HEADING_STYLES.map((styleId) => (
-                    <SelectItem key={styleId} value={styleId}>
-                      {t(`settings.editorBodyHeadingStyles.${styleId}`)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          <div className="flex min-h-16 flex-col items-start gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
-            <div className="flex min-w-0 items-center gap-3">
               <BookOpenText className="h-4 w-4 shrink-0 text-slate-500" />
               <div className="min-w-0">
                 <div className={SETTINGS_ITEM_TITLE_CLASSNAME}>{t("settings.editorBodyFontTitle")}</div>
@@ -577,44 +507,69 @@ export const PreferenceCard = ({
             </div>
           </div>
 
-          {[
-            {
-              id: "paragraphSpacing",
-              title: t("settings.editorParagraphSpacingTitle"),
-              value: String(noteProseStyle.paragraphSpacing),
-              options: NOTE_PROSE_PARAGRAPH_SPACINGS.map((value) => ({ value: String(value), label: `${value}px` })),
-              onChange: (value: string) => writeNoteProseStylePreference({ paragraphSpacing: parseNoteProseParagraphSpacing(Number(value)) ?? 8 }),
-            },
-            {
-              id: "textAlign",
-              title: t("settings.editorTextAlignTitle"),
-              value: noteProseStyle.textAlign,
-              options: NOTE_PROSE_TEXT_ALIGNS.map((value) => ({ value, label: t(`settings.editorTextAlignOptions.${value}`) })),
-              onChange: (value: string) => writeNoteProseStylePreference({ textAlign: parseNoteProseTextAlign(value) ?? "left" }),
-            },
-            {
-              id: "letterSpacing",
-              title: t("settings.editorLetterSpacingTitle"),
-              value: noteProseStyle.letterSpacing,
-              options: NOTE_PROSE_LETTER_SPACINGS.map((value) => ({ value, label: value === "default" ? t("settings.editorLetterSpacingDefault") : value })),
-              onChange: (value: string) => writeNoteProseStylePreference({ letterSpacing: parseNoteProseLetterSpacing(value) ?? "default" }),
-            },
-          ].map((setting) => (
-            <div key={setting.id} className="flex min-h-16 flex-col items-start gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
-              <div className="flex min-w-0 items-center gap-3">
-                <Type className="h-4 w-4 shrink-0 text-slate-500" />
-                <div className={SETTINGS_ITEM_TITLE_CLASSNAME}>{setting.title}</div>
-              </div>
-              <div className="w-full shrink-0 sm:w-80">
-                <Select value={setting.value} onValueChange={setting.onChange}>
-                  <SelectTrigger aria-label={setting.title} className="h-9 bg-card"><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    {setting.options.map((option) => <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>)}
-                  </SelectContent>
-                </Select>
+          <div className="flex min-h-16 flex-col items-start gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+            <div className="flex min-w-0 items-center gap-3">
+              <Palette className="h-4 w-4 shrink-0 text-slate-500" />
+              <div className="min-w-0">
+                <div className={SETTINGS_ITEM_TITLE_CLASSNAME}>{t("settings.editorBodyPaletteTitle")}</div>
               </div>
             </div>
-          ))}
+            <div className="flex w-full shrink-0 flex-col gap-2 sm:w-80">
+              <Select
+                value={noteProse.palette}
+                onValueChange={(value) => onNoteProseChange({ palette: value as NoteProsePaletteChoice })}
+              >
+                <SelectTrigger aria-label={t("settings.editorBodyPaletteTitle")} className="h-9 bg-card">
+                  <SelectValue>
+                    <span className="flex items-center gap-2">
+                      <NoteProsePaletteSwatch paletteId={noteProse.palette} />
+                      <span>{t(`settings.editorBodyPalettes.${noteProse.palette}`)}</span>
+                    </span>
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  {NOTE_PROSE_PALETTE_CHOICES.map((paletteId) => (
+                    <SelectItem
+                      key={paletteId}
+                      value={paletteId}
+                      className="pr-2.5 [&>span:last-child]:flex [&>span:last-child]:min-w-0 [&>span:last-child]:flex-1"
+                    >
+                      <span className="flex w-full items-center justify-between gap-3">
+                        <span>{t(`settings.editorBodyPalettes.${paletteId}`)}</span>
+                        <NoteProsePaletteSwatch paletteId={paletteId} />
+                      </span>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <div className="flex min-h-16 flex-col items-start gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+            <div className="flex min-w-0 items-center gap-3">
+              <Heading className="h-4 w-4 shrink-0 text-slate-500" />
+              <div className="min-w-0">
+                <div className={SETTINGS_ITEM_TITLE_CLASSNAME}>{t("settings.editorBodyHeadingStyleTitle")}</div>
+              </div>
+            </div>
+            <div className="w-full shrink-0 sm:w-80">
+              <Select
+                value={noteProseStyle.headingStyle}
+                onValueChange={(value) => writeNoteProseStylePreference({ headingStyle: value as NoteProseHeadingStyle })}
+              >
+                <SelectTrigger aria-label={t("settings.editorBodyHeadingStyleTitle")} className="h-9 bg-card">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {NOTE_PROSE_HEADING_STYLES.map((styleId) => (
+                    <SelectItem key={styleId} value={styleId}>
+                      {t(`settings.editorBodyHeadingStyles.${styleId}`)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
 
           <div className="flex min-h-16 flex-col items-start gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
             <div className="flex min-w-0 items-center gap-3">

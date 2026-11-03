@@ -141,7 +141,6 @@ import {
   docToMarkdown,
   MEMO_CONTENT_STYLE,
   noteProseCssVariables,
-  noteProseStyleCssVariables,
   markdownToDoc,
   normalizeImageGalleries,
   PLUGIN_EMBED_NODE_TYPE,
@@ -4550,7 +4549,6 @@ const RichEditorPane = ({
         data-note-title={title || getEditableMemoTitle(memo?.title)}
         style={{
           ...noteProseCssVariables(noteProse),
-          ...noteProseStyleCssVariables(noteProseStyle),
           "--memo-content-divider-spacing": `${MEMO_CONTENT_STYLE.divider.marginVertical}px`,
         } as CSSProperties}
         className={cn(
